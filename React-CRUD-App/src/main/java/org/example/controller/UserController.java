@@ -1,15 +1,13 @@
 package org.example.controller;
 
+import org.example.exception.UserNotFoundException;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:5173/")
 @RestController
 public class UserController {
     @Autowired
@@ -22,4 +20,8 @@ public class UserController {
     List<User> getUsers(){
        return userRepository.findAll();
     }
+@GetMapping("/user/{id}")
+    User getUserById(@PathVariable Long id){
+      return  userRepository.findById(id).orElseThrow(()->new UserNotFoundException(id));
+}
 }
